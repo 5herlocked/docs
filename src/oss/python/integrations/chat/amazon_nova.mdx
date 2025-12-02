@@ -152,15 +152,7 @@ asyncio.run(main())
 
 ## Tool calling
 
-Amazon Nova supports tool calling (function calling) on compatible models. You can check if a model supports tool calling using the model capabilities:
-
-```python
-from langchain_amazon_nova import ChatAmazonNova, get_model_capabilities
-
-# Check model capabilities
-capabilities = get_model_capabilities("nova-2-lite-v1")
-print(f"Supports tool calling: {capabilities.supports_function_calling}")
-```
+Amazon Nova supports tool calling (function calling) on compatible models. You can check if a model supports tool calling using LangChain model profiles.
 
 <Info>
     For details on Nova's tool calling implementation and available parameters, see the [tool calling documentation](https://nova.amazon.com/dev/documentation).
@@ -245,17 +237,7 @@ model = ChatAmazonNova(
 
 ## Model Profile
 
-Amazon Nova provides different models with varying capabilities. You can programmatically check model features:
-
-```python
-from langchain_amazon_nova import get_model_profile
-
-# Get detailed capabilities
-capabilities = get_model_capabilities("nova-2-lite-v1")
-print(f"Max Output Tokens: {capabilities.max_output_tokens}")
-print(f"Supports tool calling: {capabilities.tool_calling}")
-print(f"Supports vision: {capabilities.image_inputs}")
-```
+Amazon Nova provides different models with varying capabilities. It includes support for LangChain model profiles.
 
 <Info>
     **Model capabilities vary by model**
