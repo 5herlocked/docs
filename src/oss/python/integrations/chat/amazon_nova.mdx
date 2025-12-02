@@ -347,17 +347,7 @@ model = ChatAmazonNova(model="nova-2-lite-v1")
 
 ### Tool calling validation errors
 
-If you receive a validation error when binding tools, ensure the model supports tool calling:
-
-```python
-from langchain_amazon_nova import validate_tool_calling
-
-try:
-    validate_tool_calling("nova-lite-v1")
-    print("Model supports tool calling")
-except ValueError as e:
-    print(f"Tool calling not supported: {e}")
-```
+If you receive a validation error when binding tools, ensure the model supports tool calling.
 
 ---
 
