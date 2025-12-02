@@ -197,7 +197,7 @@ response.tool_calls
 You can also use standard LangChain tools:
 
 ```python
-from langchain_core.tools import tool
+from langchain.tools import tool
 
 @tool
 def get_weather(location: str) -> str:
