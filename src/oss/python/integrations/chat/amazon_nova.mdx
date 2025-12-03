@@ -3,7 +3,9 @@ title: ChatAmazonNova
 description: Get started using Amazon Nova [chat models](/oss/langchain/models) in LangChain.
 ---
 
-This guide provides a quick overview for getting started with Amazon Nova chat models. Amazon Nova models are OpenAI-compatible and accessed via the OpenAI SDK pointed at Nova's endpoint, providing seamless integration with LangChain's standard interfaces.
+This guide provides a quick overview for getting started with Amazon Nova chat models. Amazon Nova models are OpenAI-compatible and accessed via the OpenAI SDK pointed at Nova's endpoint, providing seamless integration with LangChain's standard interfaces. The Amazon Nova API is free tier with rate limits.
+
+For production deployments requiring higher throughput and enterprise features, consider using Amazon Nova models via [Amazon Bedrock](/oss/python/integrations/chat/bedrock).
 
 You can find information about Amazon Nova's models, their features, and API details in the [Amazon Nova documentation](https://nova.amazon.com/dev/documentation).
 
@@ -27,11 +29,11 @@ You can find information about Amazon Nova's models, their features, and API det
 
 | [Tool calling](/oss/langchain/tools) | [Structured output](/oss/langchain/structured-output) | JSON mode | [Image input](/oss/langchain/messages#multimodal) | Audio input | Video input | [Token-level streaming](/oss/langchain/streaming/) | Native async | [Token usage](/oss/langchain/models#token-usage) | [Logprobs](/oss/langchain/models#log-probabilities) |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| ✅ | ❌ | ❌ | Model-dependent | ❌ | ❌ | ✅ | ✅ | ✅ | ❌ |
+| ✅ | ✅ | ❌ | Model-dependent | ❌ | Model-dependent (Nova 2) | ✅ | ✅ | ✅ | ❌ |
 
 ## Setup
 
-To access Amazon Nova models, you'll need to obtain API credentials and install the @[`langchain-amazon-nova`] integration package.
+To access Amazon Nova models, you'll need to [obtain API credentials](https://nova.amazon.com/dev) and install the @[`langchain-amazon-nova`] integration package.
 
 ### Installation
 
@@ -95,7 +97,7 @@ messages = [
         "system",
         "You are a helpful assistant that translates English to French. Translate the user sentence.",
     ),
-    ("human", "I love programming."),
+    ("user", "I love programming."),
 ]
 ai_msg = model.invoke(messages)
 ai_msg
