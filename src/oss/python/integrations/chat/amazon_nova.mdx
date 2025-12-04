@@ -210,32 +210,98 @@ model_with_tools = model.bind_tools([get_weather])
 response = model_with_tools.invoke("What's the weather in San Francisco?")
 ```
 
-### Strict tool binding
-
-By default, @[`BaseChatModel.bind_tools`] validates that the model supports tool calling. To disable this validation:
-
-```python
-model_with_tools = model.bind_tools([GetWeather], strict=False)
-```
 
 ## System tools
 
-Amazon Nova provides built-in system tools that can be enabled by passing them to the model initialization. See the [Amazon Nova documentation](https://nova.amazon.com/dev/documentation) for available system tools and their capabilities.
+Amazon Nova provides built-in system tools that enhance the model's capabilities with integrated functionality. These tools are enabled by passing them to the model initialization or as invocation parameters.
+
+### Available system tools
+
+Amazon Nova supports the following built-in tools:
+
+#### Web grounding (nova_grounding)
+
+The grounding tool allows the model to search the web and ground its responses with real-time information from external sources.
 
 ```python
 from langchain_amazon_nova import ChatAmazonNova
 
-model = ChatAmazonNova(
+model_with_grounding = ChatAmazonNova(
+    model="nova-2-lite-v1",
+    system_tools=["nova_grounding"],
+)
+
+response = model_with_grounding.invoke("What are the latest developments in AI?")
+```
+
+The grounding tool will automatically search for relevant information and include citations in the response.
+
+#### Code interpreter (nova_code_interpreter)
+
+The code interpreter tool enables the model to write and execute Python code in a sandboxed environment, useful for mathematical computations, data analysis, and code generation tasks.
+
+```python
+from langchain_amazon_nova import ChatAmazonNova
+
+model_with_code = ChatAmazonNova(
+    model="nova-2-lite-v1",
+    system_tools=["nova_code_interpreter"],
+)
+
+response = model_with_code.invoke("Calculate the fibonacci sequence up to the 10th number")
+```
+
+The code interpreter executes code securely and returns both the code and its output.
+
+### Combining system tools
+
+You can enable multiple system tools simultaneously:
+
+```python
+from langchain_amazon_nova import ChatAmazonNova
+
+model_with_tools = ChatAmazonNova(
     model="nova-2-lite-v1",
     system_tools=["nova_grounding", "nova_code_interpreter"],
 )
+
+response = model_with_tools.invoke(
+    "Search for the current price of Bitcoin and calculate its 7-day moving average"
+)
 ```
 
-<Info>
-    **System tools**
+The model will automatically determine which tool(s) to use based on the query.
 
-    System tools like `nova_grounding` and `nova_code_interpreter` provide built-in capabilities. For details on available system tools and their usage, see the [Amazon Nova documentation](https://nova.amazon.com/dev/documentation).
+### System tools as invocation parameters
+
+You can also specify system tools at invocation time instead of during initialization:
+
+```python
+from langchain_amazon_nova import ChatAmazonNova
+
+model = ChatAmazonNova(model="nova-2-lite-v1")
+
+# Enable grounding for this specific call
+response = model.invoke(
+    "What's the weather today?",
+    system_tools=["nova_grounding"]
+)
+```
+
+This approach is useful when you want to use different system tools for different queries with the same model instance.
+
+<Info>
+    **Tool outputs and citations**
+
+    When using system tools, the model's response will include:
+    - The main text response
+    - Citations or references (for grounding tool)
+    - Code execution results (for code interpreter)
+
+    These outputs are included in the message's `response_metadata` and can be accessed for displaying sources or debugging.
 </Info>
+
+For complete details on system tools, their parameters, and capabilities, see the [Amazon Nova documentation](https://nova.amazon.com/dev/documentation).
 
 ## Model Profile
 
