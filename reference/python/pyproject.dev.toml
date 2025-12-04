@@ -36,6 +36,7 @@ dependencies = [
     #"langchain-model-profiles",
     "langchain-text-splitters",
     "langchain-anthropic",
+    "langchain-amazon-nova",
     "langchain-chroma",
     "langchain-deepseek",
     "langchain-exa",
